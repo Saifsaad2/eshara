@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إيدك بتتكلم | تعلّم لغة الإشارة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Almarai:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#0c3b47; --deep:#082a33; --card:#124b59; --line:#1d6272; --amber:#ffb703; --mint:#8be3c8; --text:#f4faf9; --muted:#b4d2d6;
+  --display:'Lalezar','Segoe UI',Tahoma,sans-serif; --body:'Almarai','Segoe UI',Tahoma,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.85;font-size:17px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font-family:var(--display);font-size:28px;text-decoration:none;color:var(--amber)}
+nav .links{display:flex;gap:22px;font-size:15px}
+nav .links a{text-decoration:none;color:var(--muted)}
+nav .links a:hover{color:var(--amber)}
+
+.hero{background:var(--deep);border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;min-height:500px;padding-bottom:30px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(52px,9vw,104px);line-height:1.05;margin:0 0 16px}
+h1 span{color:var(--amber)}
+.hero p{color:var(--muted);max-width:30em;margin:0 0 26px}
+.btn{display:inline-block;background:var(--amber);color:#2b1d00;font:700 16px var(--body);padding:12px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--mint);border:2px solid var(--mint);margin-inline-start:10px}
+.hand{display:grid;place-items:center}
+.hand div{width:min(300px,70vw);aspect-ratio:1;border-radius:50%;background:var(--card);border:3px solid var(--mint);display:grid;place-items:center;font-size:min(150px,32vw);transform-origin:70% 80%;animation:wave 3.2s ease-in-out infinite}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(14deg)}20%{transform:rotate(-8deg)}30%{transform:rotate(14deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
+@media (prefers-reduced-motion:reduce){.hand div{animation:none}html{scroll-behavior:auto}}
+
+section{padding:72px 0}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,5vw,46px);margin:0 0 8px;line-height:1.3}
+.lead{color:var(--muted);margin:0 0 28px;max-width:40em}
+
+.frame{border:2px solid var(--mint);border-radius:14px;overflow:hidden;background:var(--deep);min-height:480px}
+.frame iframe{width:100%;height:560px;border:0;display:block}
+
+.chat-sec{background:var(--deep);border-top:1px solid var(--line)}
+.chat-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;align-items:start}
+.avatar{width:120px;height:120px;border-radius:50%;background:var(--amber);display:grid;place-items:center;font-size:64px;margin-bottom:14px}
+.chat{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.chat-messages{display:flex;flex-direction:column;gap:12px;max-height:360px;min-height:180px;overflow-y:auto;padding-inline-end:4px;scroll-behavior:smooth}
+.chat-messages::-webkit-scrollbar{width:6px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
+.msg{padding:11px 16px;border-radius:16px;max-width:88%;line-height:1.6;font-size:15px;word-break:break-word}
+.bot{background:var(--card);border-top-right-radius:3px;align-self:flex-start}
+.me{background:var(--mint);color:#06302b;align-self:flex-end;border-top-left-radius:3px;font-weight:700}
+.chips-wrap{display:flex;flex-direction:column;gap:8px}
+.chips-label{font-size:13px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:14px var(--body);cursor:pointer;transition:border-color .2s,color .2s}
+.chip:hover{border-color:var(--amber);color:var(--amber)}
+.chat-form{display:flex;gap:8px;margin-top:4px}
+.chat-input{flex:1;background:var(--deep);border:1px solid var(--line);border-radius:999px;padding:11px 18px;color:var(--text);font:15px var(--body);outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--amber)}
+.chat-send{background:var(--amber);color:#2b1d00;border:0;border-radius:999px;padding:11px 22px;font:700 15px var(--body);cursor:pointer;transition:filter .2s;white-space:nowrap}
+.chat-send:hover{filter:brightness(1.08)}
+.typing-indicator{opacity:.85;font-style:italic;color:var(--muted);animation:pulse 1.5s infinite ease-in-out}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+footer{padding:28px 0;color:var(--muted);font-size:14px;text-align:center;border-top:1px solid var(--line)}
+
+@media (max-width:760px){
+  nav .links{display:none}
+  .hero-grid,.chat-grid{grid-template-columns:1fr}
+  section{padding:48px 0}
+}
+
+.map{position:relative;max-width:100%;line-height:0}
+.map img{width:100%;height:auto;display:block}
+.hot{position:absolute;width:clamp(42px,5.2%,64px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  background:rgba(144,238,144,.45);border:clamp(4px,.55vw,8px) solid #90ee90;
+  backdrop-filter:blur(2px);cursor:pointer;padding:0;display:grid;place-items:center;
+  animation:beat 1.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(144,238,144,.5)}
+.hot:hover,.hot:focus-visible{background:rgba(144,238,144,.75);animation-play-state:paused;scale:1.15}
+@keyframes beat{0%,100%{scale:1}14%{scale:1.2}28%{scale:1}42%{scale:1.14}70%{scale:1}}
+@media (prefers-reduced-motion:reduce){.hot{animation:none}}
+dialog.vid{border:3px solid var(--mint);border-radius:14px;padding:0;background:var(--deep);color:var(--text);width:min(900px,94vw);max-height:92vh}
+dialog.vid::backdrop{background:rgba(4,20,25,.75)}
+.vid header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--card)}
+.vid h3{margin:0;font-family:var(--display);font-weight:400;font-size:24px}
+.vid .x{background:var(--amber);color:#2b1d00;border:0;border-radius:999px;width:36px;height:36px;font:700 18px var(--body);cursor:pointer}
+.vid .ratio{aspect-ratio:16/9;background:#000}
+.vid iframe,.vid video{width:100%;height:100%;border:0;display:block}
+.vid .alt{padding:10px 16px;font-size:14px;color:var(--muted)}
+.vid .alt a{color:var(--mint)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top">إيدك بتتكلم</a>
+      <div class="links"><a href="#map">الخريطة</a><a href="#bot">المساعد</a></div>
+    </nav>
+    <div class="hero-grid" id="top">
+      <div>
+        <h1>إيدك <span>بتتكلم</span></h1>
+        <p>مش لازم تبقى مترجم عشان تتواصل مع شخص أصم أو ضعيف السمع. كلمات قليلة بالإشارة بتفرق كتير. ابدأ من هنا، خطوة خطوة.</p>
+        <a class="btn" href="#map">ابدأ بالخريطة</a>
+        <a class="btn ghost" href="#bot">اسأل المساعد</a>
+      </div>
+      <div class="hand" aria-hidden="true"><div>👋</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="map">
+  <div class="wrap">
+    <h2>الخريطة التفاعلية</h2>
+    <p class="lead">دوس على الزرار الأخضر على أي مكان وشاهد الفيديو التعليمي الخاص به.</p>
+    <div class="frame" id="mapFrame" style="min-height:0">
+      <div class="map" id="mapContainer">
+        <img alt="خريطة مدينة تفاعلية فيها مدرسة ومستشفى وسوبرماركت وملعب كورة وشوارع" src="images/map.jpg">
+      </div>
+    </div>
+    <dialog class="vid" id="vid">
+      <header>
+        <h3 id="vt"></h3>
+        <button class="x" type="button" id="vx" aria-label="إغلاق">✕</button>
+      </header>
+      <div class="ratio" id="vr"></div>
+      <div class="alt" id="valt"></div>
+    </dialog>
+  </div>
+</section>
+
+<section class="chat-sec" id="bot">
+  <div class="wrap chat-grid">
+    <div>
+      <div class="avatar" aria-hidden="true">🤟</div>
+      <h2 id="botName">إشارة</h2>
+      <p class="lead">مساعدك لتعلّم لغة الإشارة. بيجاوب عن الأساسيات وطريقة التواصل مع الصم وضعاف السمع.</p>
+      <button type="button" class="btn ghost" id="clearChatBtn" style="margin-top:10px;font-size:14px;padding:8px 18px;">مسح المحادثة</button>
+    </div>
+    <div class="chat" aria-label="محادثة المساعد الذكي">
+      <div class="chat-messages" id="chatLog" aria-live="polite"></div>
+      <div class="chips-wrap">
+        <span class="chips-label">جرّب تسأل عن:</span>
+        <div class="chips" id="chips"></div>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input type="text" id="chatInput" class="chat-input" placeholder="اكتب سؤالك هنا... (مثال: أبدأ منين؟)" aria-label="اكتب سؤالك">
+        <button type="submit" class="chat-send">إرسال</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>إيدك بتتكلم · مشروع طلابي</footer>
+
+<script src="qa.js"></script>
+<script>
+/* =========================================================
+   رابط خادم الذكاء الاصطناعي (Google Apps Script Web App)
+   إذا كان فارغاً "" يعمل الشات بوت مباشرة على الأسئلة الجاهزة qa.json
+   ضع الرابط هنا بعد نشر الـ Web App
+   ========================================================= */
+var BACKEND_URL = "https://script.google.com/macros/s/AKfycbxqXaRXVYjZzRrEy6VWLIsRLXUbM7sGgzKw0ujq-Re08Y83mIVKMYzEnodIqGxkk_vgsQ/exec";
+
+/* =========================================================
+   1. تعريف نقاط الخريطة (HOTSPOTS)
+   يمكنك وضع إما فيديو محلي mp4 أو يوتيوب (youtubeId و start)
+   ========================================================= */
+var HOTSPOTS = [
+  {
+    title: "المدرسة",
+    left: "35.6%",
+    top: "9.4%",
+    mp4: "videos/how-to-use-asl-in-the-classroom-learn-25-signs-720-ytshorts.savetube.me.mp4"
+  },
+  {
+    title: "المستشفى",
+    left: "74.1%",
+    top: "8.5%",
+    mp4: "videos/hospital video.mp4"
+  },
+  {
+    title: "السوبرماركت",
+    left: "47.6%",
+    top: "57.4%",
+    mp4: "videos/need-to-know-signs-for-shopping-store-buy-sell-sign-language-asl-ytmp4.savetube.vip.mp4"
+  },
+  {
+    title: "ملعب الكورة",
+    left: "90.1%",
+    top: "58.6%",
+    mp4: "videos/top-10-football-sign-language-signs-ytmp4.savetube.vip.mp4"
+  },
+  {
+    title: "الشارع",
+    left: "53.8%",
+    top: "18.2%",
+    mp4: "videos/street.mp4"
+  }
+];
+
+/* =========================================================
+   2. نافذة تشغيل الفيديو للنقاط التفاعلية
+   ========================================================= */
+(function setupHotspots() {
+  var mapBox = document.getElementById('mapContainer');
+  var d = document.getElementById('vid');
+  var vt = document.getElementById('vt');
+  var vr = document.getElementById('vr');
+  var valt = document.getElementById('valt');
+  var vx = document.getElementById('vx');
+
+  // إيقاف تشغيل أي فيديو كلياً وإغلاق النافذة
+  function closeVideo() {
+    var player = vr.querySelector('video');
+    if (player) {
+      try {
+        player.pause();
+        player.removeAttribute('src');
+        player.load();
+      } catch (err) {}
+    }
+    vr.innerHTML = '';
+    if (d.open) {
+      d.close();
+    }
+  }
+
+  // فتح الفيديو المناسب (سواء MP4 أو YouTube)
+  function openHotspot(spot) {
+    vt.textContent = spot.title;
+    vr.innerHTML = '';
+
+    if (spot.mp4) {
+      // مشغل فيديو محلي HTML5 MP4
+      vr.innerHTML = '<video controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;background:#000;">' +
+        '<source src="' + encodeURI(spot.mp4) + '" type="video/mp4">' +
+        'متصفحك لا يدعم تشغيل هذا الفيديو.' +
+        '</video>';
+      valt.innerHTML = 'فيديو محلي: <a href="' + encodeURI(spot.mp4) + '" target="_blank">افتح الفيديو في نافذة مستقلة</a>';
+    } else if (spot.youtubeId) {
+      // تضمين فيديو يوتيوب مع رابط بديل مباشر
+      var startParam = spot.start ? '?start=' + spot.start + '&autoplay=1&rel=0' : '?autoplay=1&rel=0';
+      var ytUrl = 'https://www.youtube.com/watch?v=' + spot.youtubeId + (spot.start ? '&t=' + spot.start + 's' : '');
+      vr.innerHTML = '<iframe src="https://www.youtube.com/embed/' + spot.youtubeId + startParam + '" ' +
+        'title="' + spot.title + '" ' +
+        'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+        'allowfullscreen style="width:100%;height:100%;border:0;display:block;"></iframe>';
+      valt.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
+        '<span>إذا واجهت مشكلة في تشغيل الفيديو هنا:</span>' +
+        '<a class="btn" style="padding:6px 16px;font-size:13px;border-radius:999px;text-decoration:none;" href="' + ytUrl + '" target="_blank" rel="noopener">فتح الفيديو مباشرة على YouTube (دقيقة 6:51) ↗</a>' +
+        '</div>';
+    }
+
+    if (typeof d.showModal === 'function') {
+      d.showModal();
+    } else {
+      d.setAttribute('open', '');
+    }
+  }
+
+  // إنشاء أزرار الخريطة من مصفوفة HOTSPOTS تلقائياً
+  HOTSPOTS.forEach(function(spot) {
+    var btn = document.createElement('button');
+    btn.className = 'hot';
+    btn.type = 'button';
+    btn.style.left = spot.left;
+    btn.style.top = spot.top;
+    btn.setAttribute('aria-label', 'شغّل فيديو: ' + spot.title);
+    btn.title = spot.title;
+    btn.onclick = function() {
+      openHotspot(spot);
+    };
+    mapBox.appendChild(btn);
+  });
+
+  // أحداث إغلاق الفيديو
+  vx.onclick = closeVideo;
+  d.addEventListener('close', closeVideo);
+  d.addEventListener('click', function(e) {
+    if (e.target === d) closeVideo();
+  });
+})();
+
+/* =========================================================
+   3. صندوق المحادثة الذكي والبحث في qa.json باللغة العربية
+   ========================================================= */
+(function setupChatbot() {
+  var chatLog = document.getElementById('chatLog');
+  var chipsContainer = document.getElementById('chips');
+  var chatForm = document.getElementById('chatForm');
+  var chatInput = document.getElementById('chatInput');
+  var botNameElem = document.getElementById('botName');
+  var clearChatBtn = document.getElementById('clearChatBtn');
+
+  // البيانات الكاملة لجميع الأسئلة والأجوبة مع الكلمات المفتاحية
+  var embeddedQA = (typeof window.QA_DATA !== 'undefined' && window.QA_DATA) ? window.QA_DATA : {
+    "botName": "إشارة",
+    "welcome": "أهلاً! أنا إشارة 🤟 اسألني عن أساسيات لغة الإشارة وطريقة التواصل مع الصم وضعاف السمع.",
+    "fallback": "آسف، ده خارج اختصاصي. أنا بجاوب بس عن لغة الإشارة والتواصل مع الصم وضعاف السمع. جرّب تسألني عن: أبدأ منين؟ أو أتعامل إزاي مع شخص أصم؟",
+    "items": [
+      {
+        "id": 1,
+        "question": "ما هي لغة الإشارة؟",
+        "answer": "لغة الإشارة هي لغة بصرية تعتمد على حركات اليدين والأصابع وتعبيرات الوجه وحركة الجسم للتواصل ونقل المعلومات.",
+        "keywords": [
+          "ما هي لغة الاشارة",
+          "يعني ايه لغة الاشارة",
+          "تعريف لغة الاشارة",
+          "لغة الاشارة ايه",
+          "ايه هي لغة الاشارة",
+          "معنى لغة الاشارة",
+          "مفهوم لغة الاشارة"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "لماذا يجب أن نتعلم لغة الإشارة؟",
+        "answer": "لأنها تساعدنا على التواصل مع الأشخاص الصم وضعاف السمع، وتساهم في نشر الوعي والدمج بين جميع أفراد المجتمع.",
+        "keywords": [
+          "ليه نتعلم",
+          "لماذا نتعلم",
+          "فايدة لغة الاشارة",
+          "اهمية تعلم",
+          "ليه اتعلم",
+          "لازمتها ايه",
+          "فوائد",
+          "اهميتها"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "هل لغة الإشارة لغة عالمية واحدة؟",
+        "answer": "لا، تختلف لغة الإشارة من دولة إلى أخرى، فهناك لغة الإشارة المصرية والأمريكية والبريطانية وغيرها.",
+        "keywords": [
+          "عالمية",
+          "واحدة",
+          "موحدة",
+          "نفس اللغة",
+          "كل الدول",
+          "كل العالم",
+          "مصرية والامريكية",
+          "تختلف",
+          "حول العالم"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "من هم الأشخاص الصم وضعاف السمع؟",
+        "answer": "هم أشخاص لديهم فقدان كلي أو جزئي في القدرة على السمع، وقد يستخدمون لغة الإشارة كوسيلة أساسية للتواصل.",
+        "keywords": [
+          "من هم الصم",
+          "مين الصم",
+          "الاصم",
+          "الاشخاص الصم",
+          "ضعاف السمع",
+          "ضعيف السمع",
+          "يعني ايه اصم",
+          "تعريف الاصم"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "هل يستطيع الشخص السامع تعلم لغة الإشارة؟",
+        "answer": "بالتأكيد، يمكن لأي شخص تعلم لغة الإشارة من خلال التدريب والممارسة المستمرة.",
+        "keywords": [
+          "السامع",
+          "اقدر اتعلم",
+          "ينفع اتعلم",
+          "اي حد يتعلم",
+          "استطيع تعلم",
+          "هل اقدر",
+          "اتعلمها",
+          "سهل اتعلم"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "ما أول شيء يجب تعلمه في لغة الإشارة؟",
+        "answer": "يُفضل البدء بتعلم الحروف الأبجدية بلغة الإشارة، ثم الأرقام والكلمات والجمل البسيطة.",
+        "keywords": [
+          "ابدأ منين",
+          "ابدا منين",
+          "اول حاجة",
+          "اول شيء",
+          "من اين ابدا",
+          "الحروف",
+          "ابجدية الاصابع",
+          "البداية",
+          "كيف ابدا"
+        ]
+      },
+      {
+        "id": 7,
+        "question": "كيف أقول مرحبًا بلغة الإشارة؟",
+        "answer": "توجد إشارة للتحية تختلف حسب لغة الإشارة المستخدمة، ويمكن تعلم طريقة أدائها من خلال فيديو تعليمي للغة الإشارة المصرية.",
+        "keywords": [
+          "مرحبا",
+          "اهلا",
+          "ازاي اقول مرحبا",
+          "السلام عليكم",
+          "تحية",
+          "اقول اهلا",
+          "صباح الخير",
+          "اسلم",
+          "مساء الخير",
+          "هاي"
+        ]
+      },
+      {
+        "id": 8,
+        "question": "كيف أعرّف نفسي لشخص أصم؟",
+        "answer": "يمكنك استخدام الإشارات لتوضيح اسمك، أو تهجئة اسمك باستخدام أبجدية الأصابع.",
+        "keywords": [
+          "اعرف نفسي",
+          "اقدم نفسي",
+          "اقول اسمي",
+          "تهجئة الاسم",
+          "اسمي",
+          "اتعرف",
+          "عرفه بنفسي",
+          "تقديم النفس"
+        ]
+      },
+      {
+        "id": 9,
+        "question": "هل تعبيرات الوجه مهمة في لغة الإشارة؟",
+        "answer": "نعم، تعبيرات الوجه مهمة جدًا لأنها تساعد في توضيح المعنى والمشاعر، وقد تؤثر في معنى الجملة نفسها.",
+        "keywords": [
+          "تعبيرات الوجه",
+          "ملامح الوجه",
+          "الوش",
+          "الوجه",
+          "تعابير",
+          "مشاعر الوجه"
+        ]
+      },
+      {
+        "id": 10,
+        "question": "هل لغة الإشارة تعتمد على حركة اليدين فقط؟",
+        "answer": "لا، فهي تعتمد أيضًا على تعبيرات الوجه وحركة الجسم واتجاه اليدين ومكان تنفيذ الإشارة.",
+        "keywords": [
+          "اليدين فقط",
+          "الايدين بس",
+          "الايد بس",
+          "حركة اليدين",
+          "حركة الجسم",
+          "اتجاه اليدين",
+          "بس ايدين",
+          "فقط يدين"
+        ]
+      },
+      {
+        "id": 11,
+        "question": "كيف أبدأ محادثة مع شخص أصم؟",
+        "answer": "ابدأ بالتحية، وحافظ على التواصل البصري، واستخدم إشارات بسيطة أو الكتابة إذا لم تكن تعرف لغة الإشارة جيدًا.",
+        "keywords": [
+          "ابدأ محادثة",
+          "ابدا محادثة",
+          "اكلم شخص اصم",
+          "اتكلم مع اصم",
+          "اتعامل مع اصم",
+          "التواصل مع اصم",
+          "احادث",
+          "اتواصل مع",
+          "فتح كلام"
+        ]
+      },
+      {
+        "id": 12,
+        "question": "ماذا أفعل إذا لم أفهم إشارة شخص أصم؟",
+        "answer": "اطلب منه تكرار الإشارة بهدوء، أو توضيحها بطريقة أخرى، ويمكنك استخدام الكتابة لتسهيل التواصل.",
+        "keywords": [
+          "لم افهم",
+          "مش فاهم",
+          "معرفتش افهم",
+          "مفهمتش",
+          "ما فهمت",
+          "مش فاهم اشارة",
+          "اعيد الاشارة",
+          "تكرار الاشارة",
+          "لو ما فهمت"
+        ]
+      },
+      {
+        "id": 13,
+        "question": "هل يمكن استخدام لغة الإشارة في المدارس والجامعات؟",
+        "answer": "نعم، ويمكن تعليمها في المدارس والجامعات للمساعدة في خلق بيئة تعليمية أكثر شمولًا ودمجًا.",
+        "keywords": [
+          "المدارس",
+          "الجامعات",
+          "التعليم",
+          "الفصل",
+          "المدرسة",
+          "الجامعة",
+          "دمج تعليمي",
+          "في المدرسة"
+        ]
+      },
+      {
+        "id": 14,
+        "question": "ما أهمية نشر ثقافة لغة الإشارة في المجتمع؟",
+        "answer": "يساعد نشر ثقافة لغة الإشارة على تقليل الحواجز بين الأشخاص الصم والناطقين، ويزيد من فرص التواصل والمشاركة المجتمعية.",
+        "keywords": [
+          "نشر ثقافة",
+          "ثقافة لغة الاشارة",
+          "المجتمع",
+          "الوعي",
+          "اهمية نشر",
+          "الدمج",
+          "التوعية"
+        ]
+      },
+      {
+        "id": 15,
+        "question": "كيف يمكنني تطوير مستواي في لغة الإشارة؟",
+        "answer": "يمكنك مشاهدة الفيديوهات التعليمية، والتدرب يوميًا، وتعلم كلمات جديدة، وممارسة المحادثة مع مستخدمي لغة الإشارة.",
+        "keywords": [
+          "تطوير مستواي",
+          "اطور نفسي",
+          "احسن مستواي",
+          "اتقن",
+          "احترف",
+          "تحسين",
+          "ازاي اتحسن",
+          "تدريب",
+          "ممارسة"
+        ]
+      }
+    ]
+  };
+
+  // دالة توحيد وتطبيع النص العربي
+  function normalizeArabic(text) {
+    if (!text) return '';
+    return text
+      .toString()
+      .toLowerCase()
+      .replace(/[\u064B-\u065F\u0670]/g, '') // إزالة التشكيل
+      .replace(/[إأآاٱ]/g, 'ا')
+      .replace(/ة/g, 'ه')
+      .replace(/ى/g, 'ي')
+      .replace(/[ؤئ]/g, 'ء')
+      .replace(/\u0640/g, '') // إزالة التطويل
+      .replace(/[؟?.,!،؛:\-_\\\/()\[\]{}"'~`^<>*&^%$#@+=|]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // خوارزمية ذكية لمطابقة أسئلة qa.json المحددة بدقة ومنع الإجابات المكررة
+  function findAnswer(query, qaData) {
+    var normQ = normalizeArabic(query);
+    if (!normQ) return { text: qaData.fallback, isFallback: true, isStrongMatch: false };
+
+    // الرد الفوري على كلمات التحية والشكر
+    if (/^(شكرا|شكرا جزيلا|تسلم|تسلم ايدك|الف شكر|مشكور|شكرا ليك)$/.test(normQ)) {
+      return { text: "العفو! أنا هنا دايماً لمساعدتك في لغة الإشارة والتواصل مع الصم 🤟", isFallback: false, isStrongMatch: true };
+    }
+
+    // ربط مباشر للأسئلة المقترحة (chips) حتى لو لم تطابق الكلمات المفتاحية بالضبط
+    var chipMap = [
+      { keywords: ['ابدا منين', 'ابدأ منين'], id: 6 },
+      { keywords: ['ما هي لغه الاشاره', 'يعني ايه لغه الاشاره', 'تعريف لغه الاشاره'], id: 1 },
+      { keywords: ['هل لغه الاشاره عالميه', 'هل لغه الاشاره عالميه واحده', 'لغه الاشاره عالميه'], id: 3 },
+      { keywords: ['اتعامل ازاي مع شخص اصم', 'ازاي اتعامل مع شخص اصم', 'ازاي اكلم شخص اصم', 'اتعامل ازاي مع اصم'], id: 11 },
+      { keywords: ['كيف اقول مرحبا', 'ازاي اقول مرحبا', 'كيف اقول مرحبا بلغه الاشاره'], id: 7 },
+      { keywords: ['كيف اعرف نفسي', 'ازاي اعرف نفسي', 'كيف اعرف نفسي لشخص اصم'], id: 8 }
+    ];
+    for (var ci = 0; ci < chipMap.length; ci++) {
+      var chips = chipMap[ci].keywords;
+      for (var ck = 0; ck < chips.length; ck++) {
+        if (normQ === chips[ck] || normQ.indexOf(chips[ck]) !== -1) {
+          var targetId = chipMap[ci].id;
+          for (var ti = 0; ti < qaData.items.length; ti++) {
+            if (qaData.items[ti].id === targetId) {
+              return { text: qaData.items[ti].answer, isFallback: false, isStrongMatch: true, item: qaData.items[ti] };
+            }
+          }
+        }
+      }
+    }
+
+    // فحص التطابق مع كل عنصر في قاعدة الأسئلة
+    for (var i = 0; i < qaData.items.length; i++) {
+      var item = qaData.items[i];
+      var itemQ = normalizeArabic(item.question);
+
+      // 1. إذا كان السؤال مطابقاً تماماً لنص السؤال في qa.json
+      if (normQ === itemQ) {
+        return { text: item.answer, isFallback: false, isStrongMatch: true, item: item };
+      }
+
+      // 2. فحص الكلمات المفتاحية
+      if (Array.isArray(item.keywords)) {
+        for (var k = 0; k < item.keywords.length; k++) {
+          var kw = normalizeArabic(item.keywords[k]);
+          if (!kw) continue;
+
+          // إذا تطابق السؤال تماماً مع الكلمة المفتاحية
+          if (normQ === kw) {
+            return { text: item.answer, isFallback: false, isStrongMatch: true, item: item };
+          }
+
+          // إذا كانت الكلمة المفتاحية عبارة محددة وتطابقت كجملة مركزة
+          if (kw.length >= 7 && normQ.indexOf(kw) !== -1) {
+            var wordDiff = Math.abs(normQ.split(' ').length - kw.split(' ').length);
+            if (wordDiff <= 2) {
+              return { text: item.answer, isFallback: false, isStrongMatch: true, item: item };
+            }
+          }
+        }
+      }
+    }
+
+    // إذا لم يكن السؤال مطابقاً بدقة لأحد الأسئلة الـ 15 الجاهزة، نتركه للذكاء الاصطناعي
+    return { text: qaData.fallback, isFallback: true, isStrongMatch: false };
+  }
+
+  var activeData = embeddedQA;
+  var conversationHistory = [];
+
+  // مؤشر الكتابة (typing indicator)
+  function showTypingIndicator() {
+    removeTypingIndicator();
+    var typingDiv = document.createElement('div');
+    typingDiv.className = 'msg bot typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.textContent = 'إشارة يكتب الآن... ✍️';
+    chatLog.appendChild(typingDiv);
+    chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' });
+  }
+
+  function removeTypingIndicator() {
+    var el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  // إضافة رسالة في صندوق المحادثة مع التمرير السلس
+  function appendMessage(text, sender, isFallback) {
+    var msg = document.createElement('div');
+    msg.className = 'msg ' + sender;
+    msg.textContent = text;
+    chatLog.appendChild(msg);
+
+    // إذا كانت رسالة اعتذار عن سؤال خارج الموضوع، نعرض تحتها أزرار مساعدة سريعة
+    if (isFallback) {
+      var quickRow = document.createElement('div');
+      quickRow.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;';
+      ['أبدأ منين؟', 'أتعامل إزاي مع شخص أصم؟', 'ما هي لغة الإشارة؟'].forEach(function(hint) {
+        var hintBtn = document.createElement('button');
+        hintBtn.className = 'chip';
+        hintBtn.type = 'button';
+        hintBtn.textContent = hint;
+        hintBtn.style.cssText = 'font-size:12px;padding:4px 10px;';
+        hintBtn.onclick = function() {
+          handleUserQuery(hint, activeData);
+        };
+        quickRow.appendChild(hintBtn);
+      });
+      chatLog.appendChild(quickRow);
+    }
+
+    chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' });
+  }
+
+  // في حال عدم توفر رد الذكاء الاصطناعي
+  // backendFailed=true يعني فشل الاتصال بالسيرفر (مش خارج اختصاص)
+  function fallbackToQA(qaResult, backendFailed) {
+    if (qaResult && qaResult.isStrongMatch && qaResult.text) {
+      // عندنا إجابة قريبة جاهزة من qa.json
+      appendMessage(qaResult.text, 'bot', false);
+      conversationHistory.push({ role: 'model', text: qaResult.text });
+    } else if (backendFailed) {
+      // السيرفر مشغول أو بطيء - رسالة ودية بدل رسالة "خارج اختصاصي"
+      var busyMsg = "أنا إشارة 🤟 يبدو إن السيرفر مشغول شوية دلوقتي! جرّب تسألني من الأسئلة المقترحة فوق، أو اسألني تاني بعد لحظة.";
+      appendMessage(busyMsg, 'bot', false);
+      conversationHistory.push({ role: 'model', text: busyMsg });
+    } else {
+      appendMessage(activeData.fallback, 'bot', true);
+      conversationHistory.push({ role: 'model', text: activeData.fallback });
+    }
+  }
+
+  // معالجة سؤال المستخدم
+  function handleUserQuery(userText, qaData) {
+    if (!userText || !userText.trim()) return;
+    userText = userText.trim();
+
+    appendMessage(userText, 'me', false);
+    conversationHistory.push({ role: 'user', text: userText });
+
+    // 1. أولاً: فحص التطابق مع qa.json
+    var qaResult = findAnswer(userText, qaData);
+
+    // إذا كان هناك تطابق قوي، نرد فوراً من qa.json
+    if (qaResult.isStrongMatch) {
+      setTimeout(function() {
+        appendMessage(qaResult.text, 'bot', false);
+        conversationHistory.push({ role: 'model', text: qaResult.text });
+      }, 100);
+      return;
+    }
+
+    // 2. إذا لم يكن هناك تطابق قوي، وكان رابط الذكاء الاصطناعي BACKEND_URL مفعّلاً
+    if (typeof BACKEND_URL === 'string' && BACKEND_URL.trim() !== '') {
+      showTypingIndicator();
+
+      // إرسال رسالة المستخدم الحالية بالإضافة إلى آخر 6 رسائل من سياق المحادثة
+      var recentMessages = conversationHistory.slice(-7);
+      var payload = {
+        messages: recentMessages.map(function(m) {
+          return {
+            role: (m.role === 'me' ? 'user' : m.role),
+            text: m.text
+          };
+        })
+      };
+
+      var abortController = new AbortController();
+      var timeoutId = setTimeout(function() {
+        abortController.abort();
+      }, 25000);
+
+      // إرسال POST بدون ترويسة Content-Type لتفادي حظر CORS من المتصفح
+      fetch(BACKEND_URL.trim(), {
+        method: "POST",
+        body: JSON.stringify(payload),
+        signal: abortController.signal
+      })
+      .then(function(res) {
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        removeTypingIndicator();
+        if (data && data.reply && data.reply.trim()) {
+          appendMessage(data.reply.trim(), 'bot', false);
+          conversationHistory.push({ role: 'model', text: data.reply.trim() });
+        } else {
+          fallbackToQA(qaResult, true);
+        }
+      })
+      .catch(function(err) {
+        clearTimeout(timeoutId);
+        removeTypingIndicator();
+        // لا نظهر أي خطأ تقني، بل نعرض رسالة "السيرفر مشغول"
+        fallbackToQA(qaResult, true);
+      });
+
+      return;
+    }
+
+    // 3. في حال كان BACKEND_URL فارغاً، يتم الرد من qa.json
+    setTimeout(function() {
+      fallbackToQA(qaResult);
+    }, 120);
+  }
+
+  // تشغيل واجهة المحادثة وربط الأزرار
+  function initializeChat(qaData) {
+    activeData = qaData;
+    if (qaData.botName && botNameElem) {
+      botNameElem.textContent = qaData.botName;
+    }
+
+    chatLog.innerHTML = '';
+    var welcomeMsg = qaData.welcome || "أهلاً بك! أنا إشارة 🤟 اسألني عن لغة الإشارة وطريقة التواصل مع الصم.";
+    appendMessage(welcomeMsg, "bot", false);
+    conversationHistory = [{ role: 'model', text: welcomeMsg }];
+
+    // تجهيز أزرار الأسئلة المقترحة
+    chipsContainer.innerHTML = '';
+    var suggestedQuestions = [
+      "أبدأ منين؟",
+      "ما هي لغة الإشارة؟",
+      "هل لغة الإشارة عالمية؟",
+      "أتعامل إزاي مع شخص أصم؟",
+      "كيف أقول مرحبًا؟",
+      "كيف أعرّف نفسي؟"
+    ];
+
+    suggestedQuestions.forEach(function(qText) {
+      var chipBtn = document.createElement('button');
+      chipBtn.className = 'chip';
+      chipBtn.type = 'button';
+      chipBtn.textContent = qText;
+      chipBtn.onclick = function() {
+        handleUserQuery(qText, activeData);
+      };
+      chipsContainer.appendChild(chipBtn);
+    });
+
+    // إرسال السؤال عبر حقل الإدخال
+    chatForm.onsubmit = function(e) {
+      e.preventDefault();
+      var userText = chatInput.value.trim();
+      if (!userText) return;
+
+      chatInput.value = '';
+      handleUserQuery(userText, activeData);
+      chatInput.focus();
+    };
+
+    // زر مسح المحادثة
+    if (clearChatBtn) {
+      clearChatBtn.onclick = function() {
+        chatLog.innerHTML = '';
+        appendMessage(welcomeMsg, "bot", false);
+        conversationHistory = [{ role: 'model', text: welcomeMsg }];
+      };
+    }
+  }
+
+  // محاولة تحديث البيانات من ملف qa.json إن كان الموقع يعمل على سيرفر
+  if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+    fetch('qa.json')
+      .then(function(res) { if (res.ok) return res.json(); })
+      .then(function(data) { if (data && data.items) initializeChat(data); })
+      .catch(function() { initializeChat(embeddedQA); });
+  } else {
+    // فتح كملف محلي مباشر
+    initializeChat(embeddedQA);
+  }
+})();
+</script>
+</body>
+</html>
